@@ -1,7 +1,7 @@
 // export const BASE_URL =
 //   "https://party-currency-api.onrender.com";
 
-export const BASE_URL = "http://127.0.0.1:8000";
+export const BASE_URL = import.meta.env.API_URL;
 export const ACCESS_TOKEN_DURATION = 14;
 
 export const googleAuthUrl = `${BASE_URL}/auth/google/login`;

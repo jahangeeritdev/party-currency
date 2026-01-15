@@ -117,7 +117,7 @@ def callback(request):
         payment_reference = request.query_params.get("paymentReference")
         
         if not payment_reference:
-            return HttpResponseRedirect(f"{frontend_url}/dashboard?error=missing_reference")
+            return HttpResponseRedirect(f"{frontend_url}/manage-event?error=missing_reference")
         
         transaction = Transaction.objects.get(payment_reference=payment_reference)
         transaction_reference = transaction.transaction_reference
@@ -159,7 +159,7 @@ def callback(request):
             except (CUser.DoesNotExist, Exception) as e:
                 print(f"Error updating user total: {str(e)}")
             
-            redirect_url = f"{frontend_url}/dashboard?transaction_reference={transaction_reference}"
+            redirect_url = f"{frontend_url}/manage-event?transaction_reference={transaction_reference}"
             return HttpResponseRedirect(redirect_url)
             
         else:
@@ -176,16 +176,16 @@ def callback(request):
                 except Events.DoesNotExist:
                     pass
             
-            redirect_url = f"{frontend_url}/dashboard?transaction_reference={transaction_reference}&status=failed"
+            redirect_url = f"{frontend_url}/manage-event?transaction_reference={transaction_reference}&status=failed"
             return HttpResponseRedirect(redirect_url)
             
     except Transaction.DoesNotExist:
-        redirect_url = f"{frontend_url}/dashboard?error=transaction_not_found"
+        redirect_url = f"{frontend_url}/manage-event?error=transaction_not_found"
         return HttpResponseRedirect(redirect_url)
         
     except Exception as e:
         print(f"Callback error: {str(e)}")
-        error_redirect = f"{frontend_url}/dashboard"
+        error_redirect = f"{frontend_url}/manage-event"
         if transaction_reference:
             error_redirect += f"?transaction_reference={transaction_reference}&error=processing_failed"
         else:
